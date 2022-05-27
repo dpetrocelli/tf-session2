@@ -17,7 +17,7 @@ variable "aws_region" {
 variable "profile" {
   description = "Profile of AWS credential."
   type        = string
-  default     = "sii-sandbox"
+  default     = "ar-itau"
 
 }
 

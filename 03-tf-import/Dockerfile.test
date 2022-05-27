@@ -1,0 +1,27 @@
+FROM python:3.9.13-alpine
+RUN apk add --no-cache go git
+RUN git clone https://github.com/GoogleCloudPlatform/terraformer.git -b 0.8 /root/terraformer
+RUN cd root/terraformer/ && go run build/main.go {aws}
+RUN mv root/terraformer/terraformer-{aws} root/terraformer/terraformer
+RUN apk add --no-cache terraform
+
+FROM python:3.9.13-alpine
+COPY --from=0 /root/terraformer/terraformer /root
+RUN apk add --no-cache terraform
+COPY *.tf /root
+RUN cd /root && terraform init
+WORKDIR /root/
+
+#Added this to fix the path
+ENV PATH=$PATH:/root:
+
+# git clone https://github.com/GoogleCloudPlatform/terraformer.git -b version-0.8.12 /root/terraformer
+# cd root/terraformer/ && go run build/main.go {aws}
+# mv root/terraformer/terraformer-{aws} root/terraformer/terraformer
+# apk add --no-cache terraform
+
+# TF_VERSION=1.2.1
+# wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+# unzip terraform_${TF_VERSION}_linux_amd64.zip
+# mv terraform /usr/local/bin/
+# terraform --version

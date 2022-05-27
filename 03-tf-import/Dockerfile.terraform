@@ -1,0 +1,73 @@
+FROM alpine:latest as base
+
+FROM base as builder-disposable 
+
+    ENV TF_VERSION=1.2.1
+    
+    RUN apk add unzip wget curl && \
+        mkdir /salida
+    
+    # Install Terracognita
+    RUN curl -L https://github.com/cycloidio/terracognita/releases/latest/download/terracognita-linux-amd64.tar.gz -o terracognita-linux-amd64.tar.gz && \
+        tar -xf terracognita-linux-amd64.tar.gz && \
+        chmod u+x terracognita-linux-amd64 && \
+        mv terracognita-linux-amd64 /salida/terracognita && \
+        salida/terracognita version
+    
+    # Install Terraform
+    RUN wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip && \
+        unzip terraform_${TF_VERSION}_linux_amd64.zip && \
+        mv terraform /salida/ && \
+        /salida/terraform --version
+
+    # Install drifctl
+    RUN curl -L https://github.com/snyk/driftctl/releases/latest/download/driftctl_linux_amd64 -o driftctl && \
+        chmod +x driftctl && \
+        mv driftctl /salida/ && \
+        /salida/driftctl version 
+
+FROM base as real-container
+
+    ENV TERRAFORM_USER=terraformuser
+    ENV TERRAFORM_USERGROUP=terraformgroup
+
+    RUN addgroup ${TERRAFORM_USERGROUP} && \
+        adduser ${TERRAFORM_USER} --disabled-password --home /home/${TERRAFORM_USER} --shell /bin/bash  && \
+        chown -R ${TERRAFORM_USER} /home/${TERRAFORM_USER}/ && \
+        chgrp -R ${TERRAFORM_USERGROUP} /home/${TERRAFORM_USER}/ 
+    
+    USER ${TERRAFORM_USER}
+    
+    WORKDIR /home/${TERRAFORM_USER}
+
+    ENV PATH="/home/${TERRAFORM_USER}/.local/bin:${PATH}"
+
+    COPY --from=builder-disposable /salida /usr/local/bin/
+    
+    RUN driftctl version && \
+        terraform --version && \
+        terracognita version
+
+    # RUN git clone https://github.com/GoogleCloudPlatform/terraformer.git
+    # RUN cd terraformer/ && go run build/main.go {aws}
+    # RUN mv ./terraformer-\{aws} /usr/local/bin/terraformer
+    # RUN terraformer version
+    
+    # RUN wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+    # # Unzip
+    # RUN unzip terraform_${TF_VERSION}_linux_amd64.zip
+    # # Move to local bin
+    # RUN mv terraform /usr/local/bin/
+    # # Check that it's installed
+    # RUN terraform --version
+
+    
+#     ENV PATH="/home/terraform_usr/.local/bin:${PATH}"
+# COPY --from=builder-disposable /root/terraformer/terraformer /root
+# RUN apk add --no-cache terraform
+# COPY OfficialProviders.tf /root
+# RUN cd /root && terraform init
+# WORKDIR /root/
+
+# #Added this to fix the path
+# ENV PATH=$PATH:/root:

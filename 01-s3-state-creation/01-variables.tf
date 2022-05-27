@@ -1,7 +1,7 @@
 variable "aws_profile" {
   type        = string
   description = "The AWS profile name."
-  default     = "cliente-sii-sandbox"
+  default     = "ar-itau-sandbox"
 }
 
 variable "aws_region" {
@@ -13,13 +13,13 @@ variable "aws_region" {
 variable "bucket_name" {
   type        = string
   description = "The name for the bucket where the remote state is saved."
-  default     = "cliente-sii-poc-bucket-prueba-sesion3"
+  default     = "ar-itau-poc-bucket-prueba-sesion3"
 }
 
 variable "dynamodb_table_name" {
   type        = string
   description = "The name of the DynamoDb table used to lock the state."
-  default     = "cliente-sii-poc-dynamodb-prueba-sesion3"
+  default     = "ar-itau-poc-dynamodb-prueba-sesion3"
 }
 
 variable "remote_state_file_name" {

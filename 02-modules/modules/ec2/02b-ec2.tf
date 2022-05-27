@@ -10,6 +10,7 @@ data "aws_ami" "linux2" {
 }
 # EC2 Deploy
 resource "aws_instance" "CMF_EC2" {
+  count                  = var.DeployEc2 ? 3 : 1
   ami                    = data.aws_ami.linux2.id
   instance_type          = var.instance_type["type1"]
   subnet_id              = var.subnet_id

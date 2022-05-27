@@ -17,8 +17,15 @@ variable "key_name" {
 variable "subnet_id" {
   type = string
   default = ""
-  
 }
+
+#Conditions EC2 Instance
+variable   "DeployEc2" {
+  type    = bool
+  default = false
+}
+
+
 #EC2 Instance type
 variable "instance_type" {
   type = map(string)

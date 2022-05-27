@@ -36,25 +36,3 @@ provider "aws" {
   region  = var.aws_region["oregon"]
   profile = "ar-itau"
 }
-
-
-
-# provider "random" {
-#   version = ">= 2.2.1"
-# }
-
-# provider "local" {
-#   version = ">= 1.4.0"
-# }
-
-# provider "template" {
-#   version = ">= 2.1.2"
-# }
-
-# provider "null" {
-#   version = ">= 2.1.2"
-# }
-
-# terraform {
-#   required_version = ">= 0.12.19, < 0.13.0"
-# }

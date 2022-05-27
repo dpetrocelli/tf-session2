@@ -12,7 +12,7 @@ data "aws_ami" "linux2" {
 resource "aws_instance" "CMF_EC2" {
   ami                    = data.aws_ami.linux2.id
   instance_type          = var.instance_type["type1"]
-  subnet_id              = var.public_subnets[0]
+  subnet_id              = var.subnet_id
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.CMF_Demo.id]
   tags                   = merge(var.CH_EC2tag, { Name = "${var.tag_project}-EC2" }, )

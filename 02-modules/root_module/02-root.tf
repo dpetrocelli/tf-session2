@@ -21,12 +21,11 @@ module "networking" {
   resource-name-tag = "nw-"
 }
 
-module "Ec2" {
-  source            = "../modules/Ec2"
-  vpc_id            = module.networking.vpc_id
-  project-tags      = var.project-tags
-  private_subnets   = module.networking.private_subnets
-}
+module "ec2" {
+  source            = "../modules/ec2"
+  subnet_id            = module.networking.public_subnets[0]
+  vpc_id = module.networking.vpc_id
+} 
 
 
 # module "instance" {

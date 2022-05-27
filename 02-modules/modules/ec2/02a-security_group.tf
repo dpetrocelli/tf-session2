@@ -1,7 +1,7 @@
 resource "aws_security_group" "CMF_Demo" {
   name        = "CMF_Demo"
   description = "SSH"
-  vpc_id      = var.aws-controltower-VPC
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "SSH from VPC"

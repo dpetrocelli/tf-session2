@@ -14,12 +14,3 @@ output "public_subnets" {
   description = "Public Subnets ID"
 }
 
-output "private_subnets" {
-  value       = values(aws_subnet.poc_private)[*].id
-  description = "Private Subnets ID"
-}
-
-output "private_subnets_db" {
-  value       = values(aws_subnet.poc_privateDB)[*].id
-  description = "Private Subnets DB ID"
-}

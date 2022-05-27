@@ -1,7 +1,7 @@
 variable "aws_profile" {
   type        = string
   description = "The AWS profile name."
-  default     = "ar-itau-sandbox"
+  default     = "ar-itau"
 }
 
 variable "aws_region" {

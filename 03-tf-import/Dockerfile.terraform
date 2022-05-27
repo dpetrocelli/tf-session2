@@ -48,26 +48,3 @@ FROM base as real-container
         terraform --version && \
         terracognita version
 
-    # RUN git clone https://github.com/GoogleCloudPlatform/terraformer.git
-    # RUN cd terraformer/ && go run build/main.go {aws}
-    # RUN mv ./terraformer-\{aws} /usr/local/bin/terraformer
-    # RUN terraformer version
-    
-    # RUN wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
-    # # Unzip
-    # RUN unzip terraform_${TF_VERSION}_linux_amd64.zip
-    # # Move to local bin
-    # RUN mv terraform /usr/local/bin/
-    # # Check that it's installed
-    # RUN terraform --version
-
-    
-#     ENV PATH="/home/terraform_usr/.local/bin:${PATH}"
-# COPY --from=builder-disposable /root/terraformer/terraformer /root
-# RUN apk add --no-cache terraform
-# COPY OfficialProviders.tf /root
-# RUN cd /root && terraform init
-# WORKDIR /root/
-
-# #Added this to fix the path
-# ENV PATH=$PATH:/root:
